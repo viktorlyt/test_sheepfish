@@ -23,7 +23,16 @@ type DeleteProductAction = {
   payload: number;
 };
 
-type Action = SetProductsAction | CreateProductAction |DeleteProductAction;
+type UpdateProductAction = {
+  type: "product/update";
+  payload: Product;
+};
+
+type Action =
+  | SetProductsAction
+  | CreateProductAction
+  | DeleteProductAction
+  | UpdateProductAction;
 
 const productsReducer = (state = initialState, action: Action): State => {
   switch (action.type) {
@@ -37,10 +46,20 @@ const productsReducer = (state = initialState, action: Action): State => {
         ...state,
         items: [...state.items, action.payload],
       };
+
+    case "product/update":
+      const index = state.items.findIndex((el) => el.id === action.payload.id);
+      const newItems = [...state.items];
+      newItems.splice(index, 1, action.payload);
+      return {
+        ...state,
+        items: [...newItems],
+      };
+
     case "product/delete":
       return {
         ...state,
-        items: [...state.items.filter(el => el.id !== action.payload)],
+        items: [...state.items.filter((el) => el.id !== action.payload)],
       };
 
     default:
@@ -55,6 +74,10 @@ export const productsActions = {
   }),
   createProduct: (product: Product): CreateProductAction => ({
     type: "product/create",
+    payload: product,
+  }),
+  updateProduct: (product: Product): UpdateProductAction => ({
+    type: "product/update",
     payload: product,
   }),
   deleteProduct: (id: number): DeleteProductAction => ({

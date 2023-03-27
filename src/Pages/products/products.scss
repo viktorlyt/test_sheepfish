@@ -78,11 +78,33 @@ table td {
 
 .productTitle{
   font-weight: 600;
+  vertical-align: middle;
 }
 
 .productPhoto{
   width: 100%;
   height: 50px;
+}
+
+#th__center{
+  text-align: center;
+  vertical-align: middle;
+}
+
+.th__center-last{
+  padding-right: 25px;
+}
+
+#th__left{
+  vertical-align: middle;
+}
+
+.lastColumn{
+  display: flex;
+}
+
+.change{
+  cursor: pointer;
 }
 
 .form{
@@ -108,5 +130,57 @@ table td {
     font-size: 24px;
     font-weight: bold;
     color: green;
+  }
+}
+
+.modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.7);
+  opacity: 0;
+  pointer-events: none;
+  transition: 0.5s;
+}
+
+.modal.active{
+  opacity: 1;
+  pointer-events: all;
+}
+
+.modal__content {
+  display: flex;
+  flex-direction: column;
+  padding: 50px;
+  border-radius: 10px;
+  background-color: #fff;
+  transform: scale(0.5);
+  transition: 0.4s all;
+}
+
+.modal__content.active{
+  transform: scale(1);
+}
+
+.formModal{
+  display: flex;
+  flex-direction: column;
+
+  &__label{
+    margin-top: 10px;
+    font-size: 20px;
+    font-weight: 600;
+    color: brown;
+  }
+  
+  &__input{
+    padding: 10px;
+    border: black solid 2px;
+    border-radius: 3px;
   }
 }

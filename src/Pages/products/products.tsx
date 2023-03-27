@@ -1,56 +1,67 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { Formik, Form, Field } from "formik";
 import { MyFormValues } from "../../types/types";
 import { SortLink } from "../../Components/SortLink";
-import { getProducts } from "../../Components/api";
-import { Product } from "../../types/Product";
 import { ProductRow } from "../../Components/ProductRow";
 import { useSearchParams } from "react-router-dom";
 import { Schema } from "./schema";
 import { getSearchWith } from "../../Components/searchHelper";
+import { useAppDispatch, useAppSelector } from "../../Redux/hooks";
+import { loadProducts } from "../../Redux";
+import { productsActions } from "../../Redux/products";
 
 function Products() {
-  const [data, setData] = useState<MyFormValues>({
+  const dispatch = useAppDispatch();
+  const products = useAppSelector((state) => state.items);
+  const data: MyFormValues = {
     title: "",
     author: "",
     year: "",
     rate: "",
-  });
-  const [products, setProducts] = useState<Product[]>([]);
+  };
   const [searchParams, setSearchParams] = useSearchParams();
-  const query = searchParams.get('query') || '';
+  const query = searchParams.get("query") || "";
   const sortField = searchParams.get("sort");
   const isReversed = searchParams.get("order") === "desc";
 
   useEffect(() => {
-    getProducts().then((productsFromServer) => {
-      console.log(productsFromServer);
-      const preparedProducts = productsFromServer.map((p) => ({ ...p }));
-
-      preparedProducts.forEach((product) => {
-        Object.assign(product);
-      });
-      setProducts(preparedProducts);
-    });
-  }, []);
+    dispatch(loadProducts());
+// eslint-disable-next-line react-hooks/exhaustive-deps
+}, []);
 
   let visibleProducts = [...products];
 
-  const handleSubmit = () => {};
- 
-  const handleQuery = (event: React.ChangeEvent<HTMLInputElement>) => setSearchParams(
-    getSearchWith(searchParams,
-      { query: event.target.value || null }),
-  );
+  const handleSubmit = () => {
+    const arr = [...products].map((el) => el.id);
+    const title = (document.getElementById("title") as HTMLInputElement).value;
+    const description =
+      (document.getElementById("author") as HTMLInputElement).value +
+      ", " +
+      (document.getElementById("year") as HTMLInputElement).value;
+    const rating = +(document.getElementById("rate") as HTMLInputElement).value;
+    const newProduct = {
+      id: Math.max(...arr) + 1,
+      title,
+      description,
+      price: null,
+      rating,
+      stock: null,
+      category: "books",
+    };
+    dispatch(productsActions.createProduct(newProduct));
+    (document.getElementById("form") as HTMLFormElement).reset();
+  };
+
+  const handleQuery = (event: React.ChangeEvent<HTMLInputElement>) =>
+    setSearchParams(
+      getSearchWith(searchParams, { query: event.target.value || null })
+    );
 
   if (query) {
     const lowerQuery = query.toLocaleLowerCase();
 
     visibleProducts = visibleProducts.filter(({ title }) => {
-      return [title]
-        .join('\n')
-        .toLocaleLowerCase()
-        .includes(lowerQuery);
+      return [title].join("\n").toLocaleLowerCase().includes(lowerQuery);
     });
   }
 
@@ -60,7 +71,7 @@ function Products() {
         case "title":
         case "description":
         case "category":
-          return a[sortField].localeCompare(b[sortField]);
+          return a[sortField]!.localeCompare(b[sortField]!);
         case "id":
         case "price":
         case "rating":
@@ -136,6 +147,7 @@ function Products() {
                     <SortLink field="category" />
                   </span>
                 </th>
+                <th></th>
               </tr>
             </thead>
 
