@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.css": "/test_sheepfish/static/css/main.87a06dd4.css",
+    "main.js": "/test_sheepfish/static/js/main.3fef9516.js",
+    "static/js/787.830ca456.chunk.js": "/test_sheepfish/static/js/787.830ca456.chunk.js",
+    "static/media/change.svg": "/test_sheepfish/static/media/change.c01557c45758aeb995835c5ed6a24f1b.svg",
+    "index.html": "/test_sheepfish/index.html",
+    "static/media/delete.svg": "/test_sheepfish/static/media/delete.fef53e3493e2aebcce0b1cc1da9e5436.svg",
+    "main.87a06dd4.css.map": "/test_sheepfish/static/css/main.87a06dd4.css.map",
+    "main.3fef9516.js.map": "/test_sheepfish/static/js/main.3fef9516.js.map",
+    "787.830ca456.chunk.js.map": "/test_sheepfish/static/js/787.830ca456.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.87a06dd4.css",
+    "static/js/main.3fef9516.js"
+  ]
+}
