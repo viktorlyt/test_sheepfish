@@ -9,10 +9,12 @@ import { getSearchWith } from "../../Components/searchHelper";
 import { useAppDispatch, useAppSelector } from "../../Redux/hooks";
 import { loadProducts } from "../../Redux";
 import { productsActions } from "../../Redux/products";
+import Modal from "../../Components/Modal";
 
 function Products() {
   const dispatch = useAppDispatch();
   const products = useAppSelector((state) => state.items);
+  const modalActive = useAppSelector((state) => state.modalActive);
   const data: MyFormValues = {
     title: "",
     author: "",
@@ -26,8 +28,8 @@ function Products() {
 
   useEffect(() => {
     dispatch(loadProducts());
-// eslint-disable-next-line react-hooks/exhaustive-deps
-}, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   let visibleProducts = [...products];
 
@@ -160,6 +162,8 @@ function Products() {
             </tbody>
           </table>
         </section>
+
+        {modalActive && <Modal />}
 
         <section className="section2">
           <Formik

@@ -3,8 +3,6 @@ import del from "../img/delete.svg";
 import change from "../img/change.svg";
 import { useAppDispatch } from "../Redux/hooks";
 import { productsActions } from "../Redux/products";
-import { useState } from "react";
-import Modal from "./Modal";
 
 type Props = {
   product: Product;
@@ -12,8 +10,6 @@ type Props = {
 
 export const ProductRow: React.FC<Props> = ({ product }) => {
   const dispatch = useAppDispatch();
-  const [modalActive, setModalActive] = useState(false);
-  const [productSelected, setProductSelected] = useState<Product>(product);
 
   return (
     <>
@@ -37,8 +33,8 @@ export const ProductRow: React.FC<Props> = ({ product }) => {
             src={change}
             alt="change"
             onClick={() => {
-              setProductSelected(product);
-              setModalActive(true);
+              dispatch(productsActions.setProductSelected(product));
+              dispatch(productsActions.modalOn());
             }}
           />
           <img
@@ -49,11 +45,6 @@ export const ProductRow: React.FC<Props> = ({ product }) => {
             onClick={() => dispatch(productsActions.deleteProduct(product.id))}
           />
         </div>
-        <Modal
-          productSelected={productSelected}
-          modalActive={modalActive}
-          setModalActive={setModalActive}
-        />
       </th>
     </>
   );

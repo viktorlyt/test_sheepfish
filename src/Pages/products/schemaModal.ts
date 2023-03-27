@@ -21,6 +21,4 @@ export const SchemaModal = Yup.object().shape({
     .min(2, "Too Short!")
     .max(20, "Too Long!")
     .required("Required"),
-  // images: Yup.string()
-  //   .required("Required"),
 });

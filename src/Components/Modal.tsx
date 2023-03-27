@@ -1,19 +1,13 @@
 import { Field, Form, Formik } from "formik";
 import { SchemaModal } from "../Pages/products/schemaModal";
-import { useAppDispatch } from "../Redux/hooks";
+import { useAppDispatch, useAppSelector } from "../Redux/hooks";
 import { productsActions } from "../Redux/products";
-import { Product } from "../types/Product";
 
-type PropsModal = {
-  productSelected: Product;
-  modalActive: Boolean;
-  setModalActive: React.Dispatch<React.SetStateAction<boolean>>;
-};
-const Modal: React.FC<PropsModal> = ({
-  productSelected,
-  modalActive,
-  setModalActive,
-}) => {
+const Modal: React.FC = () => {
+  let productSelected = useAppSelector((state) => state.productSelected);
+  const modalActive = useAppSelector((state) => state.modalActive);
+  const dispatch = useAppDispatch();
+
   const data = {
     id: productSelected.id,
     title: productSelected.title,
@@ -24,14 +18,11 @@ const Modal: React.FC<PropsModal> = ({
     category: productSelected.category,
     images: productSelected.images,
   };
-  console.log('data', data)
-  const dispatch = useAppDispatch();
 
   const handleSubmitModal = () => {
     const id = productSelected.id;
     const title = (document.getElementById("titleModal") as HTMLInputElement)
       .value;
-    console.log(title);
     const description = (
       document.getElementById("descriptionModal") as HTMLInputElement
     ).value;
@@ -55,15 +46,14 @@ const Modal: React.FC<PropsModal> = ({
       category,
       images,
     };
-    console.log('updatedProduct', updatedProduct);
     dispatch(productsActions.updateProduct(updatedProduct));
-    setModalActive(false);
+    dispatch(productsActions.modalOff());
   };
 
   return (
     <div
       className={modalActive ? "modal active" : "modal"}
-      onClick={() => setModalActive(false)}
+      onClick={() => dispatch(productsActions.modalOff())}
     >
       <div
         className={modalActive ? "modal__content active" : "modal__content"}

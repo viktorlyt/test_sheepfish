@@ -1,6 +1,6 @@
-import { configureStore } from '@reduxjs/toolkit';
-import { getProducts } from '../Components/api';
-import productsReducer, { productsActions } from './products';
+import { configureStore } from "@reduxjs/toolkit";
+import { getProducts } from "../Components/api";
+import productsReducer, { productsActions } from "./products";
 
 export const store = configureStore({
   reducer: productsReducer,
@@ -11,7 +11,8 @@ export type AppDispatch = typeof store.dispatch;
 
 export const loadProducts = () => {
   return (dispatch: AppDispatch) => {
-    getProducts()
-      .then(productsFromServer => dispatch(productsActions.setProducts(productsFromServer)));
+    getProducts().then((productsFromServer) =>
+      dispatch(productsActions.setProducts(productsFromServer))
+    );
   };
 };
